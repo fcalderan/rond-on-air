@@ -44,7 +44,7 @@ RtcDateTime tsBegin, tsEnd;
 
 
 // Playback state get information through the BUSY pin
-bool playbackState = digitalRead(13); //14?
+bool playbackState = digitalRead(13); 
 
 
 void setup() {
@@ -55,7 +55,7 @@ void setup() {
     // Start I2C
     rtcObject.Begin();    
 
-    delay(1000);
+    delay(500);
     /* Date and time first configuration 
      *
      * Define a date and time object that accepts the format 
@@ -98,9 +98,9 @@ void setup() {
     /* 
      * Playback Test
      */ 
-    myDFPlayer.play(1);
-    delay(8000);
-    myDFPlayer.stop(); 
+    //myDFPlayer.play(1);
+    //delay(8000);
+    //myDFPlayer.stop(); 
        
     Serial.println("-------- /setup --------");
 }
@@ -171,7 +171,7 @@ void setVolume() {
     volume = map(analogRead(A0), 0, 1023, -1, 30);
     volume = constrain(volume, -1, 30);
     if (volume < 0) {
-       volume = 16; 
+       volume = 21; 
     }
   
     
@@ -190,7 +190,10 @@ bool debugTS() {
     int h    = currentTime.Hour();
     int m    = currentTime.Minute();
 
-    if (mth == 2 && day < 16 && ((m % 1) == 0)) {
+    if (
+        (mth <= 2 && day < 16 && ((m % 1) == 0))
+        || (mth >=4 && ((m % 1) == 0))
+       ){
         stopTime = RtcDateTime(y, mth, day, h, m + 10, 0);
         return true;
     }
